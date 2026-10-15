@@ -46,4 +46,33 @@ public class ConsoleUi
         }
     }
 
+    // Till exempel "♥A ♠6 (mjuk 17)".
+    private static string FormatHand(Hand hand)
+    {
+        string cards = string.Join(" ", hand.Cards.Select(FormatCard));
+        string value = hand.IsBust ? $"{hand.Value}, spräckt"
+            : hand.IsNatural ? "naturlig tjugoett"
+            : hand.IsSoft ? $"mjuk {hand.Value}"
+            : hand.Value.ToString();
+        return $"{cards} ({value})";
+    }
+
+    private static string FormatCard(Card card) => SuitSymbol(card.Suit) + RankText(card.Rank);
+
+    private static string SuitSymbol(Suit suit) => suit switch
+    {
+        Suit.Hearts => "♥",
+        Suit.Diamonds => "♦",
+        Suit.Clubs => "♣",
+        _ => "♠"
+    };
+
+    private static string RankText(Rank rank) => rank switch
+    {
+        Rank.Ace => "A",
+        Rank.Jack => "Kn",
+        Rank.Queen => "D",
+        Rank.King => "K",
+        _ => ((int)rank).ToString()
+    };
 }
