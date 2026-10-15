@@ -64,6 +64,17 @@ public class ConsoleUi
         }
     }
 
+    public void ShowRoundResult(Dealer dealer, Dictionary<Player, Outcome> results)
+    {
+        Console.WriteLine();
+        Console.WriteLine("--- Resultat ---");
+        Console.WriteLine($"Givaren: {FormatHand(dealer.Hand)}");
+        foreach (var (player, outcome) in results)
+        {
+            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)}");
+        }
+    }
+
     // Till exempel "♥A ♠6 (mjuk 17)".
     private static string FormatHand(Hand hand)
     {
@@ -92,5 +103,12 @@ public class ConsoleUi
         Rank.Queen => "D",
         Rank.King => "K",
         _ => ((int)rank).ToString()
+    };
+
+    private static string FormatOutcome(Outcome outcome) => outcome switch
+    {
+        Outcome.Win => "Vinst",
+        Outcome.Loss => "Förlust",
+        _ => "Lika"
     };
 }
