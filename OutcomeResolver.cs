@@ -17,6 +17,26 @@ public static class OutcomeResolver
             return Outcome.Draw;
         }
 
+        if (player.IsNatural && !dealer.IsNatural)
+        {
+            return Outcome.Win;
+        }
+
+        if (!player.IsNatural && dealer.IsNatural)
+        {
+            return Outcome.Loss;
+        }
+
+        if (player.Value > dealer.Value)
+        {
+            return Outcome.Win;
+        }
+
+        if (dealer.Value > player.Value)
+        {
+            return Outcome.Loss;
+        }
+
         return Outcome.Draw;
     }
 }
