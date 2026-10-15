@@ -46,6 +46,24 @@ public class ConsoleUi
         }
     }
 
+    // Visar spelarens hand och givarens öppna kort, aldrig hålkortet.
+    // Frågar tills svaret är k eller s.
+    public Move AskMove(string name, Hand hand, Card dealerUpCard)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"{name}: {FormatHand(hand)}");
+        Console.WriteLine($"Givaren visar: {FormatCard(dealerUpCard)} [dolt]");
+
+        while (true)
+        {
+            Console.Write("(k)öpa eller (s)tanna? ");
+            string answer = ReadLine().ToLower();
+            if (answer == "k") return Move.Hit;
+            if (answer == "s") return Move.Stand;
+            Console.WriteLine("Skriv k för att köpa eller s för att stanna.");
+        }
+    }
+
     // Till exempel "♥A ♠6 (mjuk 17)".
     private static string FormatHand(Hand hand)
     {
