@@ -32,5 +32,18 @@ public class ConsoleUi
         return line.Trim();
     }
 
+    public string AskName()
+    {
+        while (true)
+        {
+            Console.Write("Namn: ");
+            string name = ReadLine();
+            if (name.Length > 0 && name.Length <= MaxNameLength)
+            {
+                return name;
+            }
+            Console.WriteLine($"Namnet måste vara 1–{MaxNameLength} tecken.");
+        }
+    }
 
 }
