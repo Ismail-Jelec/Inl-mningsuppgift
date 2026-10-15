@@ -48,10 +48,13 @@
 // [ ] Felaktig inmatning hanteras utan att programmet kraschar
 
 // === GameStorage.cs, Game.cs, Program.cs === Ansvarig: Ismail
-// [ ] En till fem spelare kan läggas till och spela
-// [ ] Spelare och resultat sparas till fil och läses tillbaka vid nästa start
-// [ ] Under 15 kort kvar: ny blandad lek inför nästa runda
-// [ ] Många rundor i följd går att spela utan att kortleken tar slut
-// [ ] En Random skapas i Program och delas av hela programmet
+// [x] En till fem spelare kan läggas till och spela
+// [x] Spelare och resultat sparas till fil och läses tillbaka vid nästa start
+// [x] Under 15 kort kvar: ny blandad lek inför nästa runda
+// [x] Många rundor i följd går att spela utan att kortleken tar slut
+// [x] En Random skapas i Program och delas av hela programmet
 
 
+var random = new Random(); // den enda Random i hela programmet
+var game = new Game(new ConsoleUi(), new GameStorage("players.json"), new Deck(random));
+game.Run();
