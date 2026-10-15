@@ -1,10 +1,13 @@
 using System.Text;
 
+// All in- och utmatning. Ingen annan klass använder Console.
 public class ConsoleUi
 {
     private const int MaxNameLength = 20;
+
     public ConsoleUi()
     {
+        // Utan detta visas ♥♦♣♠ som frågetecken i Windows-konsolen.
         Console.OutputEncoding = Encoding.UTF8;
     }
 
@@ -22,6 +25,9 @@ public class ConsoleUi
             Console.WriteLine($"Skriv ett tal mellan {min} och {max}.");
         }
     }
+
+    // Console.ReadLine ger null om inmatningen tar slut (t.ex. Ctrl+Z).
+    // Resultaten sparas efter varje runda, så programmet kan avslutas direkt.
     private static string ReadLine()
     {
         string? line = Console.ReadLine();
