@@ -75,6 +75,16 @@ public class ConsoleUi
         }
     }
 
+    public void ShowStats(IEnumerable<Player> players)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"{"Namn",-20} {"Vinster",7}  {"Förluster",9}  {"Lika",4}");
+        foreach (Player p in players)
+        {
+            Console.WriteLine($"{p.Name,-20} {p.Wins,7}  {p.Losses,9}  {p.Pushes,4}");
+        }
+    }
+
     // Till exempel "♥A ♠6 (mjuk 17)".
     private static string FormatHand(Hand hand)
     {
