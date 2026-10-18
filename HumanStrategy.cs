@@ -5,15 +5,16 @@
 public class HumanStrategy : IPlayerStrategy
 {
     private readonly ConsoleUi _ui;
+    private readonly string _name;
 
-    public HumanStrategy(ConsoleUi ui)
+    public HumanStrategy(ConsoleUi ui, string name)
     {
         _ui = ui;
+        _name = name;
     }
 
     public Move Decide(Hand hand, Card dealerUpcard)
     {
-        _ui.ShowHand(hand, dealerUpcard);
-        return _ui.AskMove();
+        return _ui.AskMove(_name, hand, dealerUpcard);
     }
 }

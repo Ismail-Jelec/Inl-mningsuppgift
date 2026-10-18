@@ -75,6 +75,20 @@ public class Round
  
         return results;
     }
-        
+    
+    public Dictionary<Player, Outcome> Play()
+    {
+        DealInitialCards();
+
+        foreach (Player player in _players)
+        {
+            PlayPlayerTurn(player);
+        }
+
+        PlayDealerTurn();
+
+        return ResolveOutcomes();
+    }
+
 
 }
