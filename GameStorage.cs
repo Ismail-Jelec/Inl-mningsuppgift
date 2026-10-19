@@ -2,12 +2,8 @@ using System.Text.Json;
 
 public class GameStorage
 {
-    private readonly string _path;
+    private const string _path = "players.json";
 
-    public GameStorage(string path)
-    {
-        _path = path;
-    }
 
     public string? LastError { get; private set; }
     public List<PlayerRecord> Load()
