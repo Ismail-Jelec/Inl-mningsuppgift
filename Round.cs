@@ -7,12 +7,15 @@ public class Round
     private readonly Dealer _dealer;
     private readonly IReadOnlyList<Player> _players;
 
+    private readonly RuleSet _rules;
+
 // Tar emot kortleken, givaren och listan med spelare.
-    public Round(Deck deck, Dealer dealer, IReadOnlyList<Player> players)
+    public Round(Deck deck, Dealer dealer, IReadOnlyList<Player> players, RuleSet rules)
     {
-    _deck = deck;
-    _dealer = dealer;
-    _players = players;
+        _deck = deck;
+        _dealer = dealer;
+        _players = players;
+        _rules = rules;
     }
 
 // Delar ut två kort till varje spelare och två kort till dealern.
@@ -70,7 +73,7 @@ public class Round
  
         foreach (Player player in _players)
         {
-            results[player] = OutcomeResolver.Resolve(player.Hand, _dealer.Hand);
+            results[player] = OutcomeResolver.Resolve(player.Hand, _dealer.Hand, _rules);
         }
  
         return results;

@@ -1,6 +1,6 @@
 public static class OutcomeResolver
 {
-    public static Outcome Resolve(Hand player, Hand dealer)
+    public static Outcome Resolve(Hand player, Hand dealer, RuleSet rules)
     {
         // Spräcker spelaren är det förlust, även om givaren också spräcker.
         if (player.IsBust)
@@ -13,10 +13,14 @@ public static class OutcomeResolver
             return Outcome.Draw;
         }
 
-        // Naturlig tjugoett måste kollas före givarens spräckta hand,
-        // annars blir det Win (1:1) i stället för Blackjack (3:2).
         if (player.IsNatural)
         {
+            // Spelaren är naturlig men givaren inte. Har givaren ändå 21
+            // måste det vara på tre kort eller fler.
+            if (!rules.NaturalBeatsThreeCard21 && dealer.Value == 21)
+            {
+                return Outcome.Draw;
+            }
             return Outcome.Blackjack;
         }
 
@@ -27,6 +31,12 @@ public static class OutcomeResolver
 
         if (dealer.IsNatural)
         {
+            // Givaren är naturlig men spelaren inte. Har spelaren ändå 21
+            // måste det vara på tre kort eller fler.
+            if (!rules.NaturalBeatsThreeCard21 && player.Value == 21)
+            {
+                return Outcome.Draw;
+            }
             return Outcome.Loss;
         }
 
