@@ -21,12 +21,17 @@ public class Dealer : Participant
         HoleCardHidden = false;
     }
 
-    // Köper på 16 eller lägre, stannar på 17 eller högre, även på mjuk 17.
+    // Köper på 16 eller lägre och stannar på 18 eller högre.
+    // På 17 köps bara mjuk 17, och bara om husregeln säger det.
     public bool ShouldHit()
     {
-        return Hand.Value < StandValue;
-    }
+        if (Hand.Value < StandValue)
+        {
+            return true;
+        }
 
+        return _rules.DealerHitsSoft17 && Hand.Value == StandValue && Hand.IsSoft;
+    }
     public override void ClearHand()
     {
         base.ClearHand();

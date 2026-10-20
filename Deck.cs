@@ -1,33 +1,36 @@
 public class Deck
 {
-    public const int ReshuffleThreshold = 15;
+  
 
     private readonly Random _random;
+    private readonly RuleSet _rules;
     private readonly List<Card> _cards = new();
 
     // Random skapas en gång i Program och delas av hela programmet. En ny
     // Random vid varje blandning ger samma lek om och om igen.
-    public Deck(Random random)
+    public Deck(Random random, RuleSet rules)
     {
         _random = random;
+        _rules = rules;
         Reset();
     }
 
     public int Remaining => _cards.Count;
 
     // Kollas inför varje runda.
-    public bool NeedsReshuffle => Remaining < ReshuffleThreshold;
+    public bool NeedsReshuffle => Remaining < _rules.ReshuffleThreshold;
 
     // Bygger en ny lek med 52 kort och blandar den.
     public void Reset()
     {
-        _cards.Clear();
-
-        foreach (Suit suit in Enum.GetValues<Suit>())
+        for (int i = 0; i < _rules.DeckCount; i++)
         {
-            foreach (Rank rank in Enum.GetValues<Rank>())
+            foreach (Suit suit in Enum.GetValues<Suit>())
             {
-                _cards.Add(new Card(suit, rank));
+                foreach (Rank rank in Enum.GetValues<Rank>())
+                {
+                    _cards.Add(new Card(suit, rank));
+                }
             }
         }
 
