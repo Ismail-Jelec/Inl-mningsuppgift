@@ -70,7 +70,9 @@ public class ConsoleUi
         Console.WriteLine("");
         Console.WriteLine("Du:");
         DrawCards(hand.Cards);
-        Console.WriteLine($"Givaren visar: {FormatCard(dealerUpCard)} [dolt]");
+        var shown = new Hand();
+        shown.Add(dealerUpCard);
+        Console.WriteLine($"Givaren visar: {FormatCard(dealerUpCard)} [dolt] ({shown.Value})");
         Console.WriteLine($"{name}: {FormatHand(hand)}");
 
         while (true)
