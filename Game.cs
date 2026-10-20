@@ -56,7 +56,7 @@ public class Game
     {
         foreach (PlayerRecord record in _storage.Load())
         {
-            _knownPlayers.Add(CreatePlayer(record.Name, record.Wins, record.Losses, record.Pushes));
+            _knownPlayers.Add(CreatePlayer(record.Name, record.Wins, record.Losses, record.Pushes, record.Chips));
         }
 
         if (_storage.LastError != null)
@@ -86,13 +86,20 @@ public class Game
 
         if (player == null)
         {
-            player = CreatePlayer(name, 0, 0, 0);
+            player = CreatePlayer(name, 0, 0, 0, Bankroll.StartingChips);
             _knownPlayers.Add(player);
             _ui.ShowMessage($"Ny spelare: {name}");
         }
         else
         {
             _ui.ShowMessage($"Välkommen tillbaka, {player.Name}!");
+        }
+
+        // En spelare som gick ut med noll marker får inte sätta sig igen.
+        if (player.Bankroll.IsEmpty)
+        {
+            _ui.ShowMessage($"{player.Name} har inga marker kvar och kan inte spela.");
+            return;
         }
 
         _table.Add(player);
@@ -141,12 +148,20 @@ public class Game
         }
 
         _ui.ShowRoundResult(_dealer, results);
+
+        // ToList behövs eftersom man inte kan ta bort ur _table medan man loopar över den.
+        foreach (Player player in _table.Where(p => p.Bankroll.IsEmpty).ToList())
+        {
+            _table.Remove(player);
+            _ui.ShowMessage($"{player.Name} har slut på marker och lämnar bordet.");
+        }
+
         SavePlayers();
     }
 
     private void SavePlayers()
     {
-        var records = _knownPlayers.Select(p => new PlayerRecord(p.Name, p.Wins, p.Losses, p.Pushes));
+        var records = _knownPlayers.Select(p => new PlayerRecord(p.Name, p.Wins, p.Losses, p.Pushes, p.Bankroll.Chips));
 
         if (!_storage.Save(records))
         {
@@ -154,9 +169,9 @@ public class Game
         }
     }
 
-    private Player CreatePlayer(string name, int wins, int losses, int pushes)
+    private Player CreatePlayer(string name, int wins, int losses, int pushes, int chips)
     {
-        return new Player(name, new HumanStrategy(_ui, name), wins, losses, pushes);
+        return new Player(name, new HumanStrategy(_ui, name), wins, losses, pushes, chips);
     }
 
     // Namn jämförs utan hänsyn till stora och små bokstäver, så "anna" och "Anna" är samma spelare.
