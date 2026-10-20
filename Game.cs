@@ -5,17 +5,21 @@ public class Game
     private readonly ConsoleUi _ui;
     private readonly GameStorage _storage;
     private readonly Deck _deck;
-    private readonly Dealer _dealer = new();
-
+    
+    private readonly RuleSet _rules;
+    private readonly Dealer _dealer;
 
     private readonly List<Player> _knownPlayers = new();
 
     private readonly List<Player> _table = new();
-    public Game(ConsoleUi ui, GameStorage storage, Deck deck)
+
+    public Game(ConsoleUi ui, GameStorage storage, Deck deck, RuleSet rules)
     {
         _ui = ui;
         _storage = storage;
         _deck = deck;
+        _rules = rules;
+        _dealer = new Dealer(rules);
     }
 
     public void Run()
@@ -136,10 +140,10 @@ public class Game
         if (_deck.NeedsReshuffle)
         {
             _deck.Reset();
-            _ui.ShowMessage("Färre än 15 kort kvar. En ny lek blandas.");
+            _ui.ShowMessage($"Färre än {_rules.ReshuffleThreshold} kort kvar. En ny lek blandas.");
         }
 
-        var round = new Round(_deck, _dealer, _table);
+        var round = new Round(_deck, _dealer, _table, _rules);
         Dictionary<Player, Outcome> results = round.Play();
 
         foreach (var (player, outcome) in results)
