@@ -60,6 +60,9 @@ public class ConsoleUi
         Console.WriteLine();
         Console.WriteLine("Givaren:");
         DrawCards(new Card?[] { dealerUpCard, null});
+        Console.WriteLine("");
+        Console.WriteLine("Du:");
+        DrawCards(hand.Cards);
         Console.WriteLine($"Givaren visar: {FormatCard(dealerUpCard)} [dolt]");
         Console.WriteLine($"{name}: {FormatHand(hand)}");
 
