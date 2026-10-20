@@ -52,6 +52,13 @@ public class ConsoleUi
             Console.WriteLine($"Namnet måste vara 1–{MaxNameLength} tecken.");
         }
     }
+    
+    // Frågar efter insatsen. ReadInt ser till att den är mellan 1 och spelarens marker.
+    public int AskBet(string name, int chips)
+    {
+        Console.WriteLine();
+        return ReadInt($"{name}, du har {chips} marker. Insats: ", 1, chips);
+    }
 
     // Visar spelarens hand och givarens öppna kort, aldrig hålkortet.
     // Frågar tills svaret är k eller s.
@@ -85,7 +92,7 @@ public class ConsoleUi
         
         foreach (var (player, outcome) in results)
         {
-            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)}");
+            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
             DrawCards(player.Hand.Cards);
         }
     }
@@ -133,6 +140,7 @@ public class ConsoleUi
     private static string FormatOutcome(Outcome outcome) => outcome switch
     {
         Outcome.Win => "Vinst",
+        Outcome.Blackjack => "Vinst (naturlig tjugoett)",
         Outcome.Loss => "Förlust",
         _ => "Lika"
     };

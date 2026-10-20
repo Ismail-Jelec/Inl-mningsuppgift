@@ -75,9 +75,28 @@ public class Round
  
         return results;
     }
-    
+
+// Varje spelare satsar innan korten delas ut.
+    private void TakeBets()
+    {
+        foreach (Player player in _players)
+        {
+            player.Bankroll.PlaceBet(player.ChooseBet());
+        }
+    }
+
+// Betalar ut insatserna efter att utfallen är avgjorda.
+    private void SettleBets(Dictionary<Player, Outcome> results)
+    {
+        foreach (var (player, outcome) in results)
+        {
+            player.Bankroll.Settle(outcome);
+        }
+    }
+
     public Dictionary<Player, Outcome> Play()
     {
+        TakeBets();
         DealInitialCards();
 
         foreach (Player player in _players)
@@ -87,7 +106,9 @@ public class Round
 
         PlayDealerTurn();
 
-        return ResolveOutcomes();
+        Dictionary<Player, Outcome> results = ResolveOutcomes();
+        SettleBets(results);
+        return results;
     }
 
 
