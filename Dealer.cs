@@ -4,8 +4,11 @@ public class Dealer : Participant
 {
     public const int StandValue = 17;
 
-    public Dealer() : base("Givaren")
+    private readonly RuleSet _rules;
+
+    public Dealer(RuleSet rules) : base("Givaren")
     {
+        _rules = rules;
     }
 
     // Hålkortet är givarens andra kort. Det är dolt tills givarens tur börjar.
