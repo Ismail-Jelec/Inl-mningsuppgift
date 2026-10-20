@@ -37,5 +37,25 @@ public class Shoe
             }
         }
         
+        Shuffle();
+
+        int quarter = _cards.Count / 4;
+        _cutCardPosition = _random.Next(quarter / 2, quarter);
+    }
+
+    public Card Draw()
+    {
+        Card card = _cards[^1];
+        _cards.RemoveAt(_cards.Count - 1);
+        return card;
+    }
+
+    private void Shuffle()
+    {
+        for (int i = _cards.Count - 1; i > 0; i--)
+        {
+            int j = _random.Next(i + 1);
+            (_cards[i], _cards[j]) = (_cards[j], _cards[i]);
+        }
     }
 }
