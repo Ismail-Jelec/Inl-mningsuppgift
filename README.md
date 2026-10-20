@@ -12,11 +12,9 @@ dotnet run
 
 ## Arbetssätt
 
-- `main` innehåller bara färdig kod. PR från `dev` med 2 godkännanden.
-- `dev` är default branch. All kod kommer in via PR med 1 godkännande.
+- `dev` är vår main. All kod kommer in via PR med 1 godkännande.
 - En branch per kort, t.ex. `feature-hand-value`, skapad från `dev`.
 - En klass per fil.
-- Ingen `Console` utanför konsolgränssnittet.
 
 ## Klassöversikt
 
@@ -28,9 +26,13 @@ _Läggs in som bild i repot och länkas här._
 
 ## Vem gjorde vad
 
-| Namn | Tillval | Del av grunden |
-| ---- | ------- | -------------- |
-|      |         |                |
+|  Namn  | Tillval | Del av grunden |
+| ------ | ------- | -------------- |
+| Ismail | 1, 5    |                |
+| Albin  |         |                |
+| Ayaan  |         |                |
+| Adrian |         |                |
+
 
 ## Avvikelser från reglerna
 

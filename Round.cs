@@ -38,6 +38,7 @@ public class Round
         }
     }
 
+// Spelaren får köpa tills den stannar, spräcker eller har 21.
     private void PlayPlayerTurn(Player player)
     {
         while (!player.Hand.IsBust &&player.Hand.Value < Blackjack)
@@ -52,6 +53,7 @@ public class Round
         }
     }
 
+// Rundan spelas alltid färdigt, även om alla spelare har spräckt/bustat.
     private void PlayDealerTurn()
     {
         _dealer.RevealHoleCard();
@@ -74,5 +76,41 @@ public class Round
         return results;
     }
         
+
+// Varje spelare satsar innan korten delas ut.
+    private void TakeBets()
+    {
+        foreach (Player player in _players)
+        {
+            player.Bankroll.PlaceBet(player.ChooseBet());
+        }
+    }
+
+// Betalar ut insatserna efter att utfallen är avgjorda.
+    private void SettleBets(Dictionary<Player, Outcome> results)
+    {
+        foreach (var (player, outcome) in results)
+        {
+            player.Bankroll.Settle(outcome);
+        }
+    }
+
+    public Dictionary<Player, Outcome> Play()
+    {
+        TakeBets();
+        DealInitialCards();
+
+        foreach (Player player in _players)
+        {
+            PlayPlayerTurn(player);
+        }
+
+        PlayDealerTurn();
+
+        Dictionary<Player, Outcome> results = ResolveOutcomes();
+        SettleBets(results);
+        return results;
+    }
+
 
 }

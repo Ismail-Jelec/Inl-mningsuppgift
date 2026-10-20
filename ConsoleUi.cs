@@ -5,6 +5,7 @@ public class ConsoleUi
 {
     private const int MaxNameLength = 20;
 
+    private readonly CardRenderer _renderer = new();
     public ConsoleUi()
     {
         // Utan detta visas ♥♦♣♠ som frågetecken i Windows-konsolen.
@@ -51,14 +52,28 @@ public class ConsoleUi
             Console.WriteLine($"Namnet måste vara 1–{MaxNameLength} tecken.");
         }
     }
+    
+    // Frågar efter insatsen. ReadInt ser till att den är mellan 1 och spelarens marker.
+    public int AskBet(string name, int chips)
+    {
+        Console.WriteLine();
+        return ReadInt($"{name}, du har {chips} marker. Insats: ", 1, chips);
+    }
 
     // Visar spelarens hand och givarens öppna kort, aldrig hålkortet.
     // Frågar tills svaret är k eller s.
     public Move AskMove(string name, Hand hand, Card dealerUpCard)
     {
         Console.WriteLine();
+        Console.WriteLine("Givaren:");
+        DrawCards(new Card?[] { dealerUpCard, null});
+        Console.WriteLine("");
+        Console.WriteLine("Du:");
+        DrawCards(hand.Cards);
+        var shown = new Hand();
+        shown.Add(dealerUpCard);
+        Console.WriteLine($"Givaren visar: {FormatCard(dealerUpCard)} [dolt] ({shown.Value})");
         Console.WriteLine($"{name}: {FormatHand(hand)}");
-        Console.WriteLine($"Givaren visar: {FormatCard(dealerUpCard)} [dolt]");
 
         while (true)
         {
@@ -75,9 +90,12 @@ public class ConsoleUi
         Console.WriteLine();
         Console.WriteLine("--- Resultat ---");
         Console.WriteLine($"Givaren: {FormatHand(dealer.Hand)}");
+        DrawCards(dealer.Hand.Cards);
+        
         foreach (var (player, outcome) in results)
         {
-            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)}");
+            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
+            DrawCards(player.Hand.Cards);
         }
     }
 
@@ -124,7 +142,32 @@ public class ConsoleUi
     private static string FormatOutcome(Outcome outcome) => outcome switch
     {
         Outcome.Win => "Vinst",
+        Outcome.Blackjack => "Vinst (naturlig tjugoett)",
         Outcome.Loss => "Förlust",
         _ => "Lika"
     };
+
+    private void DrawCards(IEnumerable<Card?> cards)
+    {
+        var rendered = cards
+            .Select(card => card == null
+                ? (Lines: _renderer.RenderBack(), Color: (ConsoleColor?)null)
+                : (Lines: _renderer.Render(card), Color: ColorFor(card.Suit)))
+            .ToList();
+
+        for (int row = 0; row < rendered[0]. Lines.Length; row++)
+        {
+            foreach (var (lines, color) in rendered)
+            {
+                if (color != null)
+                {
+                    Console.ForegroundColor = color.Value;
+                }
+                Console.Write(lines[row] + " ");
+                Console.ResetColor();
+            }
+            Console.WriteLine();
+        }
+    }
+        private static ConsoleColor? ColorFor(Suit suit) => suit is Suit.Hearts or Suit.Diamonds ? ConsoleColor.Red : null;
 }
