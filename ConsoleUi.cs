@@ -49,7 +49,7 @@ public class ConsoleUi
             {
                 return name;
             }
-            Console.WriteLine($"Namnet måste vara 1–{MaxNameLength} tecken.");
+            Console.WriteLine($"Namnet måste vara 1-{MaxNameLength} tecken.");
         }
     }
     
@@ -94,7 +94,7 @@ public class ConsoleUi
         
         foreach (var (player, outcome) in results)
         {
-            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
+            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} - {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
             DrawCards(player.Hand.Cards);
         }
     }
