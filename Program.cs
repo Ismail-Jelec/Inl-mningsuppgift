@@ -9,5 +9,5 @@ foreach (string warning in loader.Warnings)
     ui.ShowMessage(warning);
 }
 
-var game = new Game(ui, new GameStorage(), new Deck(random, rules), rules);
+var game = new Game(ui, new GameStorage(), new Shoe(random, rules), rules);
 game.Run();
