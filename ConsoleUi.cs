@@ -49,7 +49,7 @@ public class ConsoleUi
             {
                 return name;
             }
-            Console.WriteLine($"Namnet måste vara 1–{MaxNameLength} tecken.");
+            Console.WriteLine($"Namnet måste vara 1-{MaxNameLength} tecken.");
         }
     }
     
@@ -94,16 +94,9 @@ public class ConsoleUi
         
         foreach (var (player, outcome) in results)
         {
-            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
+            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} - {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
             DrawCards(player.Hand.Cards);
         }
-    }
-
-    // Visar korträknarens läge inför rundan, innan insatserna läggs.
-    public void ShowCount(int runningCount, double trueCount, CountTrend trend)
-    {
-        Console.WriteLine();
-        Console.WriteLine($"Korträkning – löpande: {runningCount:+0;-0;0}, sann: {trueCount:+0.0;-0.0;0.0} ({FormatTrend(trend)})");
     }
 
     public void ShowStats(IEnumerable<Player> players)
@@ -129,13 +122,6 @@ public class ConsoleUi
 
     private static string FormatCard(Card card) =>
         CardRenderer.SuitSymbol(card.Suit) + CardRenderer.RankText(card.Rank);
-
-    private static string FormatTrend(CountTrend trend) => trend switch
-    {
-        CountTrend.Favorable => "gynnsamt för spelarna",
-        CountTrend.Unfavorable => "ogynnsamt för spelarna",
-        _ => "neutralt"
-    };
 
     private static string FormatOutcome(Outcome outcome) => outcome switch
     {

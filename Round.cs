@@ -3,16 +3,16 @@ public class Round
     private const int InitialCardsPerParticipant = 2;
 
     private const int Blackjack = 21;
-    private readonly Shoe _shoe;
+    private readonly Deck _deck;
     private readonly Dealer _dealer;
     private readonly IReadOnlyList<Player> _players;
 
     private readonly RuleSet _rules;
 
-// Tar emot skon, givaren och listan med spelare.
-    public Round(Shoe shoe, Dealer dealer, IReadOnlyList<Player> players, RuleSet rules)
+// Tar emot kortleken, givaren och listan med spelare.
+    public Round(Deck deck, Dealer dealer, IReadOnlyList<Player> players, RuleSet rules)
     {
-        _shoe = shoe;
+        _deck = deck;
         _dealer = dealer;
         _players = players;
         _rules = rules;
@@ -34,10 +34,10 @@ public class Round
         {
             foreach (Player player in _players)
             {
-            player.ReceiveCard(_shoe.Draw());
+            player.ReceiveCard(_deck.Draw());
             }
 
-            _dealer.ReceiveCard(_shoe.Draw());
+            _dealer.ReceiveCard(_deck.Draw());
         }
     }
 
@@ -52,7 +52,7 @@ public class Round
             {
                 break;
             }
-            player.ReceiveCard(_shoe.Draw());
+            player.ReceiveCard(_deck.Draw());
         }
     }
 
@@ -63,7 +63,7 @@ public class Round
  
         while (_dealer.ShouldHit())
         {
-            _dealer.ReceiveCard(_shoe.Draw());
+            _dealer.ReceiveCard(_deck.Draw());
         }
 
     }
