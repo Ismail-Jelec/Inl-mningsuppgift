@@ -99,6 +99,13 @@ public class ConsoleUi
         }
     }
 
+    // Visar korträknarens läge inför rundan, innan insatserna läggs.
+    public void ShowCount(int runningCount, double trueCount, CountTrend trend)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"Korträkning – löpande: {runningCount:+0;-0;0}, sann: {trueCount:+0.0;-0.0;0.0} ({FormatTrend(trend)})");
+    }
+
     public void ShowStats(IEnumerable<Player> players)
     {
         Console.WriteLine();
@@ -122,6 +129,13 @@ public class ConsoleUi
 
     private static string FormatCard(Card card) =>
         CardRenderer.SuitSymbol(card.Suit) + CardRenderer.RankText(card.Rank);
+
+    private static string FormatTrend(CountTrend trend) => trend switch
+    {
+        CountTrend.Favorable => "gynnsamt för spelarna",
+        CountTrend.Unfavorable => "ogynnsamt för spelarna",
+        _ => "neutralt"
+    };
 
     private static string FormatOutcome(Outcome outcome) => outcome switch
     {
