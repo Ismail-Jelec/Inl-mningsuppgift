@@ -12,6 +12,7 @@ public class Game
     private readonly List<Player> _knownPlayers = new();
 
     private readonly List<Player> _table = new();
+    private int _computerCount = 0; 
 
     public Game(ConsoleUi ui, GameStorage storage, Deck deck, RuleSet rules)
     {
@@ -29,7 +30,7 @@ public class Game
         while (true)
         {
             ShowMenu();
-            int choice = _ui.ReadInt("Välj: ", 0, 4);
+            int choice = _ui.ReadInt("Välj: ", 0, 5);
 
             switch (choice)
             {
@@ -37,6 +38,7 @@ public class Game
                 case 2: RemovePlayer(); break;
                 case 3: PlayRound(); break;
                 case 4: _ui.ShowStats(_knownPlayers); break;
+                case 5: AddComputerPlayer(); break;
                 case 0: SavePlayers(); return;
             }
         }
@@ -53,6 +55,7 @@ public class Game
         _ui.ShowMessage("2. Ta bort spelare");
         _ui.ShowMessage("3. Spela en runda");
         _ui.ShowMessage("4. Visa resultat");
+        _ui.ShowMessage("5. Lägg till datorspelare");
         _ui.ShowMessage("0. Avsluta");
     }
 
@@ -109,6 +112,27 @@ public class Game
         _table.Add(player);
     }
 
+    private void AddComputerPlayer()
+    {
+        if (_table.Count >= MaxPlayers)
+        {
+            _ui.ShowMessage($"Bordet är fullt, Max {MaxPlayers} spelare.");
+            return;
+        }
+
+        _ui.ShowMessage("1. Enkel (Köper under 17)");
+        _ui.ShowMessage("2. Grundstrategi");
+        int type = _ui.ReadInt("Välj Strategi: ", 1,2);
+
+        IPlayerStrategy strategy = type == 1 ? new SimpleStrategy() : new BasicStrategy();
+        string label = type == 1 ? "Dator-enkel" : "Dator-grund";
+        _computerCount++;
+
+        // Datorspelare sparas inte i json-filen, Därför läggs de inte i _knownPlayers.
+        // Filen vet inte vilken strategi spelaren hade, så nästa gång spelet startar 
+        // skulle datorn bli en vanlig människa.
+        _table.Add(new Player($"{label} {_computerCount}", strategy, 0, 0, 0, Bankroll.StartingChips));
+    }
     private void RemovePlayer()
     {
         if (_table.Count == 0)
