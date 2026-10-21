@@ -4,9 +4,8 @@ public class Game
 
     private readonly ConsoleUi _ui;
     private readonly GameStorage _storage;
-    private readonly Shoe _shoe;
-    private readonly CardCounter _counter = new();
-
+    private readonly Deck _deck;
+    
     private readonly RuleSet _rules;
     private readonly Dealer _dealer;
 
@@ -15,11 +14,11 @@ public class Game
     private readonly List<Player> _table = new();
     private int _computerCount = 0; 
 
-    public Game(ConsoleUi ui, GameStorage storage, Shoe shoe, RuleSet rules)
+    public Game(ConsoleUi ui, GameStorage storage, Deck deck, RuleSet rules)
     {
         _ui = ui;
         _storage = storage;
-        _shoe = shoe;
+        _deck = deck;
         _rules = rules;
         _dealer = new Dealer(rules);
     }
@@ -161,24 +160,15 @@ public class Game
             return;
         }
 
-        // Kollas före rundan, inte under, så att en runda aldrig byter sko halvvägs.
-        if (_shoe.NeedsReshuffle)
+        // Kollas före rundan, inte under, så att en runda aldrig byter lek halvvägs.
+        if (_deck.NeedsReshuffle)
         {
-            _ui.ShowMessage(_shoe.CutCardReached
-                ? "Skiljekortet har kommit fram. Skon blandas om."
-                : $"Färre än {_rules.ReshuffleThreshold} kort kvar. Skon blandas om.");
-            _shoe.Reset();
-            _counter.Reset();
+            _deck.Reset();
+            _ui.ShowMessage($"Färre än {_rules.ReshuffleThreshold} kort kvar. En ny lek blandas.");
         }
 
-        _ui.ShowCount(_counter.RunningCount, _counter.TrueCount(_shoe.DecksRemaining), _counter.Trend(_shoe.DecksRemaining));
-
-        var round = new Round(_shoe, _dealer, _table, _rules);
+        var round = new Round(_deck, _dealer, _table, _rules);
         Dictionary<Player, Outcome> results = round.Play();
-
-        // Räknaren får se korten först när rundan är slut och hålkortet är vänt.
-        // Den läser bara händerna och ändrar ingenting i spelet.
-        _counter.Observe(_dealer.Hand.Cards.Concat(_table.SelectMany(p => p.Hand.Cards)));
 
         foreach (var (player, outcome) in results)
         {
