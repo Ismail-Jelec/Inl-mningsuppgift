@@ -29,7 +29,7 @@ _Läggs in som bild i repot och länkas här._
 |  Namn  | Tillval | Del av grunden |
 | ------ | ------- | -------------- |
 | Ismail | 1, 5    |                |
-| Albin  |         |                |
+| Albin  | 2       |                |
 | Ayaan  |         |                |
 | Adrian |         |                |
 
