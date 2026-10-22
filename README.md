@@ -43,7 +43,7 @@ dotnet run
 
 |  Namn  | Tillval | Del av grunden |
 | ------ | ------- | -------------- |
-| Ismail | 1       | `Card`, `Suit`, `Rank`, `Deck`, `Hand`, `Participant`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`, `Player` |
+| Ismail | 1       | `Card`, `Deck`, `Hand`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`|
 | Albin  | 2       | `Move`, `IPlayerStrategy`, `Player`, `Game` |
 | Ayaan  | 4       | `Move`, `Outcome`, `OutcomeResolver` |
 | Adrian |         |                |
