@@ -17,29 +17,27 @@ dotnet run
 - En klass per fil.
 
 ## Klassöversikt
+- `Program` - skapar den enda `Random` i programmet, läser in husreglerna och startar 
+- `Game` - menyn och spelloopen. Lägger till och tar bort spelare, startar en `Round` per giv och sparar spelarna efter varje runda.
+- `Hand` - korten en deltagare har. Räknar ut värdet varje gång det efterfrågas och vet om handen är mjuk, spräckt eller naturlig tjugoett.
+- `Dealer` - ärver `Participant`. Har hålkortet och den fasta regeln för när givaren köper.
+- `ConsoleUi` - all in- och utmatning. Visar händer och resultat, frågar och validerar svar.
+- `CardRenderer` - ritar ett kort som rader text (`string[]`), så att `ConsoleUi` kan skriva ut flera kort bredvid varandra.
+- `GameStorage` - sparar och läser spelarna i `players.json`.
+- `PlayerRecord` - det som sparas om en spelare mellan körningar: namn, vinster, förluster, lika och marker.
 - `SimpleStrategy` – en datorspelare som köper tills den har 17 eller mer. Den bryr sig inte om vad givaren har.
 - `BasicStrategy` – en datorspelare som följer grundstrategin. Den kollar sin hand, om den är mjuk eller hård, och vilket kort givaren visar, och läser sedan av vad den ska göra i en tabell.
 - `Game` – menyn och spelloopen. Jag lade till val 5 så att man kan sätta en datorspelare vid bordet och välja vilken strategi den ska ha.
 
 ## Klassdiagram
 
-- `Program` - skapar den enda `Random` i programmet, läser in husreglerna och startar 
-- `Game` - menyn och spelloopen. Lägger till och tar bort spelare, startar en `Round` per giv och sparar spelarna efter varje runda.
-
-- `Hand` - korten en deltagare har. Räknar ut värdet varje gång det efterfrågas och vet om handen är mjuk, spräckt eller naturlig tjugoett.
-s.
-- `Dealer` - ärver `Participant`. Har hålkortet och den fasta regeln för när givaren köper.
-- `ConsoleUi` - all in- och utmatning. Visar händer och resultat, frågar och validerar svar.
-- `CardRenderer` - ritar ett kort som rader text (`string[]`), så att `ConsoleUi` kan skriva ut flera kort bredvid varandra.
-- `GameStorage` - sparar och läser spelarna i `players.json`.
-- `PlayerRecord` - det som sparas om en spelare mellan körningar: namn, vinster, förluster, lika och marker.
 
 
 ## Vem gjorde vad
 
 |  Namn  | Tillval | Del av grunden |
 | ------ | ------- | -------------- |
-| Ismail | 1       | `Card`, `Suit`, `Rank`, `Deck`, `Hand`, `Participant`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`, `Player` |
+| Ismail | 1       | `Deck`, `Hand`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`, `Player` |
 | Albin  | 2       |                |
 | Ayaan  |         |                |
 | Adrian |         |                |
