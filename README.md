@@ -17,8 +17,9 @@ dotnet run
 - En klass per fil.
 
 ## Klassöversikt
-
-_Fylls i när grunden är klar._
+- `SimpleStrategy` – en datorspelare som köper tills den har 17 eller mer. Den bryr sig inte om vad givaren har.
+- `BasicStrategy` – en datorspelare som följer grundstrategin. Den kollar sin hand, om den är mjuk eller hård, och vilket kort givaren visar, och läser sedan av vad den ska göra i en tabell.
+- `Game` – menyn och spelloopen. Jag lade till val 5 så att man kan sätta en datorspelare vid bordet och välja vilken strategi den ska ha.
 
 ## Klassdiagram
 
