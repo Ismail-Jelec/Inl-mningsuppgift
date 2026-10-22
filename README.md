@@ -40,7 +40,7 @@ s.
 |  Namn  | Tillval | Del av grunden |
 | ------ | ------- | -------------- |
 | Ismail | 1       | `Card`, `Suit`, `Rank`, `Deck`, `Hand`, `Participant`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`, `Player` |
-| Albin  | 2       |                |
+| Albin  | 2       | `Move`, `IPlayerStrategy`, `Player`, `game`|
 | Ayaan  |         |                |
 | Adrian |         |                |
 
