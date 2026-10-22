@@ -23,6 +23,8 @@ public class Deck
     // Bygger en ny lek med 52 kort och blandar den.
     public void Reset()
     {
+        _cards.Clear();
+
         for (int i = 0; i < _rules.DeckCount; i++)
         {
             foreach (Suit suit in Enum.GetValues<Suit>())

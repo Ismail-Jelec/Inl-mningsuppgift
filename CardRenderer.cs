@@ -8,11 +8,11 @@ public class CardRenderer
         return new[]
         {
             "┌───────┐",
-           $"|{rank, -2}     |",
-            "|       |",
-           $"|   {suit}   |",
-            "|       |",
-           $"|     {rank, 2}|",
+           $"│{rank, -2}     │",
+            "│       │",
+           $"│   {suit}   │",
+            "│       │",
+           $"│     {rank, 2}│",
             "└───────┘"
         };
 
@@ -25,29 +25,30 @@ public class CardRenderer
         return new[]
         {
             "┌───────┐",
-            "|▒▒▒▒▒▒▒|",
-            "|▒▒▒▒▒▒▒|",
-            "|▒▒▒▒▒▒▒|",
-            "|▒▒▒▒▒▒▒|",
-            "|▒▒▒▒▒▒▒|",
+            "│▒▒▒▒▒▒▒│",
+            "│▒▒▒▒▒▒▒│",
+            "│▒▒▒▒▒▒▒│",
+            "│▒▒▒▒▒▒▒│",
+            "│▒▒▒▒▒▒▒│",
             "└───────┘"
         };
     }
 
-    private static string SuitSymbol(Suit suit) => suit switch
+    // Används även av ConsoleUi för textvisningen, så symbolerna bara finns på ett ställe.
+    public static string SuitSymbol(Suit suit) => suit switch
     {
-            Suit.Hearts => "♥",
-            Suit.Diamonds => "♦",
-            Suit.Clubs => "♣",
-            _ => "♠"
+        Suit.Hearts => "♥",
+        Suit.Diamonds => "♦",
+        Suit.Clubs => "♣",
+        _ => "♠"
     };
 
-    private static string RankText(Rank rank) => rank switch
+    public static string RankText(Rank rank) => rank switch
     {
-            Rank.Ace => "A",
-            Rank.Jack => "Kn",
-            Rank.Queen => "D",
-            Rank.King => "K",
-            _ => ((int)rank).ToString()
+        Rank.Ace => "A",
+        Rank.Jack => "Kn",
+        Rank.Queen => "D",
+        Rank.King => "K",
+        _ => ((int)rank).ToString()
     };
 }

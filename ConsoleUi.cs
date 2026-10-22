@@ -49,7 +49,7 @@ public class ConsoleUi
             {
                 return name;
             }
-            Console.WriteLine($"Namnet måste vara 1–{MaxNameLength} tecken.");
+            Console.WriteLine($"Namnet måste vara 1-{MaxNameLength} tecken.");
         }
     }
     
@@ -94,7 +94,7 @@ public class ConsoleUi
         
         foreach (var (player, outcome) in results)
         {
-            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} – {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
+            Console.WriteLine($"{player.Name}: {FormatHand(player.Hand)} - {FormatOutcome(outcome)} ({player.Bankroll.Chips} marker)");
             DrawCards(player.Hand.Cards);
         }
     }
@@ -120,24 +120,8 @@ public class ConsoleUi
         return $"{cards} ({value})";
     }
 
-    private static string FormatCard(Card card) => SuitSymbol(card.Suit) + RankText(card.Rank);
-
-    private static string SuitSymbol(Suit suit) => suit switch
-    {
-        Suit.Hearts => "♥",
-        Suit.Diamonds => "♦",
-        Suit.Clubs => "♣",
-        _ => "♠"
-    };
-
-    private static string RankText(Rank rank) => rank switch
-    {
-        Rank.Ace => "A",
-        Rank.Jack => "Kn",
-        Rank.Queen => "D",
-        Rank.King => "K",
-        _ => ((int)rank).ToString()
-    };
+    private static string FormatCard(Card card) =>
+        CardRenderer.SuitSymbol(card.Suit) + CardRenderer.RankText(card.Rank);
 
     private static string FormatOutcome(Outcome outcome) => outcome switch
     {
