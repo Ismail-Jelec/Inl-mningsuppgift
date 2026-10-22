@@ -41,6 +41,42 @@ dotnet run
 ## Klassdiagram
 ```mermaid
 classDiagram
+    direction TB
+
+    class Program
+    class Game {
+        +int MaxPlayers
+        -ConsoleUi _ui
+        -GameStorage _storage
+        -Deck _deck
+        -Dealer _dealer
+        -RuleSet _rules
+        -List~Player~ _knownPlayers
+        -List~Player~ _table
+        +Run()
+        -AddPlayer()
+        -RemovePlayer()
+        -PlayRound()
+        -SavePlayers()
+    }
+    class Round {
+        -Deck _deck
+        -Dealer _dealer
+        -IReadOnlyList~Player~ _players
+        -RuleSet _rules
+        +DealInitialCards()
+        -TakeBets()
+        -PlayPlayerTurn(Player player)
+        -PlayDealerTurn()
+        -ResolveOutcomes() Dictionary
+        -SettleBets(Dictionary results)
+        +Play() Dictionary
+    }
+    class OutcomeResolver {
+        <<static>>
+        +Resolve(Hand player, Hand dealer, RuleSet rules)$ Outcome
+    }
+
     class RuleSet {
         +bool DealerHitsSoft17
         +int DeckCount
@@ -52,18 +88,7 @@ classDiagram
         +List~string~ Warnings
         +Load() RuleSet
     }
-    class Program
-    class Game {
-        -RuleSet _rules
-        +Run()
-    }
-    class Deck {
-        -RuleSet _rules
-        +int Remaining
-        +bool NeedsReshuffle
-        +Reset()
-        +Draw() Card
-    }
+
     class Participant {
         <<abstract>>
         +string Name
@@ -71,74 +96,188 @@ classDiagram
         +ReceiveCard(Card card)
         +ClearHand()
     }
-    class Dealer {
-        -RuleSet _rules
-        +Card UpCard
-        +ShouldHit() bool
-        +RevealHoleCard()
-    }
     class Player {
+        -IPlayerStrategy _strategy
+        +int Wins
+        +int Losses
+        +int Pushes
         +Bankroll Bankroll
         +Decide(Card dealerUpcard) Move
         +ChooseBet() int
         +RecordOutcome(Outcome outcome)
     }
+    class Dealer {
+        +int StandValue
+        -RuleSet _rules
+        +bool HoleCardHidden
+        +Card UpCard
+        +RevealHoleCard()
+        +ShouldHit() bool
+    }
     class Bankroll {
+        +int StartingChips
         +int Chips
         +int CurrentBet
+        +bool IsEmpty
+        +IsValidBet(int amount) bool
         +PlaceBet(int amount)
         +Settle(Outcome outcome)
     }
+
+    class IPlayerStrategy {
+        <<interface>>
+        +Decide(Hand hand, Card dealerUpcard) Move
+        +ChooseBet(int chips) int
+    }
+    class HumanStrategy {
+        -ConsoleUi _ui
+        -string _name
+    }
+    class SimpleStrategy
+    class BasicStrategy
+
     class Hand {
+        +IReadOnlyList~Card~ Cards
         +int Value
         +bool IsSoft
         +bool IsBust
         +bool IsNatural
+        +Add(Card card)
+        +Clear()
     }
-    class Round {
-        -int InitialCardsPerParticipant
-        -int Blackjack
-        -Deck _deck
-        -Dealer _dealer
-        -IReadOnlyList~Player~ _players
+    class Card {
+        +Suit Suit
+        +Rank Rank
+    }
+    class Deck {
+        -Random _random
         -RuleSet _rules
-        +DealInitialCards()
-        -PlayPlayerTurn(Player player)
-        -PlayDealerTurn()
-        -ResolveOutcomes() Dictionary~Player, Outcome~
-        -TakeBets()
-        -SettleBets(Dictionary~Player, Outcome~ results)
-        +Play() Dictionary~Player, Outcome~
+        +int Remaining
+        +bool NeedsReshuffle
+        +Reset()
+        +Draw() Card
     }
-    class OutcomeResolver {
-        <<static>>
-        +Resolve(Hand player, Hand dealer, RuleSet rules)$ Outcome
+    class Shoe {
+        <<oanvänd>>
+        +int Remaining
+        +bool NeedsReshuffle
+        +Reset()
+        +Draw() Card
     }
+
+    class ConsoleUi {
+        -CardRenderer _renderer
+        +ShowMessage(string text)
+        +ReadInt(string prompt, int min, int max) int
+        +AskName() string
+        +AskBet(string name, int chips) int
+        +AskMove(string name, Hand hand, Card dealerUpCard) Move
+        +ShowRoundResult(Dealer dealer, Dictionary results)
+        +ShowStats(IEnumerable players)
+    }
+    class CardRenderer {
+        +Render(Card card) string[]
+        +RenderBack() string[]
+    }
+    class GameStorage {
+        +string LastError
+        +Load() List~PlayerRecord~
+        +Save(IEnumerable records) bool
+    }
+    class PlayerRecord {
+        <<record>>
+        +string Name
+        +int Wins
+        +int Losses
+        +int Pushes
+        +int Chips
+    }
+
+    class Suit {
+        <<enumeration>>
+        Hearts
+        Diamonds
+        Clubs
+        Spades
+    }
+    class Rank {
+        <<enumeration>>
+        Ace
+        Two
+        Three
+        Four
+        Five
+        Six
+        Seven
+        Eight
+        Nine
+        Ten
+        Jack
+        Queen
+        King
+    }
+    class Move {
+        <<enumeration>>
+        Hit
+        Stand
+    }
+    class Outcome {
+        <<enumeration>>
+        Win
+        Loss
+        Draw
+        Blackjack
+    }
+
+    Program ..> RuleSetLoader : anropar Load()
+    Program ..> Game : skapar
+    Program ..> Deck : skapar
+    Program ..> ConsoleUi : skapar
+    RuleSetLoader ..> RuleSet : skapar
 
     Participant <|-- Player
     Participant <|-- Dealer
     Participant *-- Hand
+    Hand o-- Card
     Player *-- Bankroll
+    Player --> IPlayerStrategy
+    IPlayerStrategy <|.. HumanStrategy
+    IPlayerStrategy <|.. SimpleStrategy
+    IPlayerStrategy <|.. BasicStrategy
+    HumanStrategy --> ConsoleUi
 
-    Program ..> RuleSetLoader : anropar Load()
-    RuleSetLoader ..> RuleSet : skapar
-    Program ..> Game : skapar
-    Program ..> Deck : skapar
-
-    Game --> RuleSet
-    Game --> Deck
-    Game --> Dealer
-    Game ..> Round : skapar
+    Card --> Suit
+    Card --> Rank
+    Deck o-- Card
+    Shoe o-- Card
     Deck --> RuleSet
     Dealer --> RuleSet
 
-    Round --> RuleSet
+    Game --> ConsoleUi
+    Game --> GameStorage
+    Game --> Deck
+    Game --> Dealer
+    Game --> RuleSet
+    Game o-- Player
+    Game ..> Round : skapar
+
     Round --> Deck
     Round --> Dealer
-    Round --> Player : spelar för
+    Round --> Player
+    Round --> RuleSet
     Round ..> OutcomeResolver : anropar Resolve()
     OutcomeResolver ..> RuleSet
+    OutcomeResolver ..> Hand
+    OutcomeResolver ..> Outcome
+
+    ConsoleUi --> CardRenderer
+    GameStorage ..> PlayerRecord
+    Player ..> Outcome
+    Player ..> Move
+    Bankroll ..> Outcome
 ```
+
+Det här bör du kontrollera:
 
 
 ## Vem gjorde vad
