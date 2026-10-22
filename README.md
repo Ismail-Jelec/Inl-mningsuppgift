@@ -27,7 +27,13 @@ dotnet run
 - `PlayerRecord` - det som sparas om en spelare mellan körningar: namn, vinster, förluster, lika och marker.
 - `SimpleStrategy` – en datorspelare som köper tills den har 17 eller mer. Den bryr sig inte om vad givaren har.
 - `BasicStrategy` – en datorspelare som följer grundstrategin. Den kollar sin hand, om den är mjuk eller hård, och vilket kort givaren visar, och läser sedan av vad den ska göra i en tabell.
-- `Game` – menyn och spelloopen. Jag lade till val 5 så att man kan sätta en datorspelare vid bordet och välja vilken strategi den ska ha.
+- `Game` – menyn och spelloopen. Jag lade till val 5 så att man kan sätta en datorspelare vid bordet och välja vilken strategi den ska ha. (ändringar)
+- `Move` – de två drag en spelare kan göra: köpa eller stanna. (små ädnringar)
+- `Outcome` – hur en runda slutade för en spelare: vinst, förlust, lika eller naturlig tjugoett.
+- `OutcomeResolver` – jämför spelarens hand med givarens och avgör vem som vann. Följer tabellen i reglerna, så att den som spräcker alltid förlorar och naturlig tjugoett slår 21 på tre kort.
+- `Bankroll` – håller koll på en spelares marker och insats. Den drar insatsen när man satsar och betalar ut efter rundan: vinst 1:1, naturlig tjugoett 3:2 och lika ger insatsen tillbaka.
+- `Round` – jag lade till att alla spelare satsar innan korten delas ut, och att insatserna betalas ut när rundan är avgjord. (ändringar)
+- `Game` – jag lade till att en spelare som får slut på marker lämnar bordet och inte kan sätta sig igen, och att markerna sparas tillsammans med resten. (ändringar)
 
 ## Klassdiagram
 
@@ -39,7 +45,7 @@ dotnet run
 | ------ | ------- | -------------- |
 | Ismail | 1       | `Deck`, `Hand`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`, `Player` |
 | Albin  | 2       |                |
-| Ayaan  |         |                |
+| Ayaan  | 4       | `Move`, `Outcome`, `OutcomeResolver` |
 | Adrian |         |                |
 
 
