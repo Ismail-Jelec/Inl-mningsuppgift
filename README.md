@@ -17,8 +17,8 @@ dotnet run
 - En klass per fil.
 
 ## Klassöversikt
-- `Program` - skapar den enda `Random` i programmet, läser in husreglerna och startar 
-- `Game` - menyn och spelloopen. Lägger till och tar bort spelare, startar en `Round` per giv och sparar spelarna efter varje runda.
+- `Program` - skapar den enda `Random` i programmet, läser in husreglerna och startar `Game`.
+- `Game` - menyn och spelloopen. Lägger till och tar bort spelare, startar en `Round` per giv och sparar spelarna efter varje runda. Val 5 sätter en datorspelare vid bordet och låter en välja vilken strategi den ska ha.
 - `Hand` - korten en deltagare har. Räknar ut värdet varje gång det efterfrågas och vet om handen är mjuk, spräckt eller naturlig tjugoett.
 - `Dealer` - ärver `Participant`. Har hålkortet och den fasta regeln för när givaren köper.
 - `ConsoleUi` - all in- och utmatning. Visar händer och resultat, frågar och validerar svar.
@@ -43,8 +43,8 @@ dotnet run
 
 |  Namn  | Tillval | Del av grunden |
 | ------ | ------- | -------------- |
-| Ismail | 1       | `Deck`, `Hand`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`, `Player` |
-| Albin  | 2       |                |
+| Ismail | 1       | `Card`, `Suit`, `Rank`, `Deck`, `Hand`, `Participant`, `Dealer` `ConsoleUi`, `Game`, `GameStorage`, `PlayerRecord`, `Program`, `Player` |
+| Albin  | 2       | `Move`, `IPlayerStrategy`, `Player`, `Game` |
 | Ayaan  | 4       | `Move`, `Outcome`, `OutcomeResolver` |
 | Adrian |         |                |
 
