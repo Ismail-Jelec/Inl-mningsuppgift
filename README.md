@@ -292,8 +292,12 @@ Det här bör du kontrollera:
 
 ## Avvikelser från reglerna
 
-_Inga än._
+- Naturlig tjugoett ska betala 3:2, men vi räknar med heltal. Vid udda insats avrundas vinsten nedåt, så en insats på 5 ger 7 i stället för 7,5.
+- En spelare som har slut på marker får inte sätta sig vid bordet igen, inte ens efter omstart. Reglerna säger bara att spelaren lämnar bordet, så det här är vårt val.
 
 ## Kända brister
 
-En känd brist är att man inte kan ändra rules när man kör programet. Man behöver ändra de i rules.txt filen innan man startar nästa program. 
+- En känd brist är att man inte kan ändra rules när man kör programet. Man behöver ändra de i rules.txt filen innan man startar nästa program. 
+- En spelare med 0 marker kan aldrig spela igen med samma namn. Det finns inget sätt att köpa nya marker.
+- Försäkring (frivilligt i tillval 4) är inte gjord.
+- Det finns inga automatiska tester. Utbetalningar och vem som vinner har bara testats genom att spela.
