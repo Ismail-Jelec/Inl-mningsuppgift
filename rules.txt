@@ -1,0 +1,5 @@
+# Husregler. Rader som börjar med # ignoreras.
+DealerHitsSoft17 = false
+DeckCount = 6
+ReshuffleThreshold = 78
+NaturalBeatsThreeCard21 = true
